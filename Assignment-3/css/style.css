@@ -1,0 +1,189 @@
+
+		.text-center {
+			text-align: center !important;
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'sans-serif';
+			max-width: 1100px;
+			margin: auto;
+		}
+
+		h1 {
+			text-align: center;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
+
+		.form-box {
+			display: table;
+			margin: 20px auto;
+
+		}
+
+		.form-group {
+			display: table-row;
+		}
+
+		.form-group>* {
+			display: table-cell;
+		}
+
+		.form-input {
+			position: relative;
+			padding-bottom: 12px;
+		}
+
+		.form-input>input {
+			width: 100%;
+			height: 30px;
+			margin: 5px;
+
+		}
+
+		.form-input i {
+			color: red;
+			font-size: 12px;
+			position: absolute;
+			bottom: 3px;
+			left: 10px;
+		}
+
+		.err-type {
+			background: #ee4a4a !important;
+		}
+
+		/* table scroll*/
+		.table-scroll__wrap {
+			width: 100%;
+			overflow: auto;
+			border: 1px dotted;
+			border-top: none;
+			margin-bottom: 30px;
+		}
+
+		.table-scroll {
+			width: 100%;
+			min-width: 600px;
+			display: block;
+			empty-cells: show;
+			border-spacing: 0;
+		}
+
+		.table-scroll thead {
+			background-color: #f1f1f1;
+			position: relative;
+			display: block;
+			width: 100%;
+			overflow-y: scroll;
+		}
+
+		.table-scroll tbody {
+			/* Position */
+			display: block;
+			position: relative;
+			width: 100%;
+			overflow-y: scroll;
+		}
+
+		.table-scroll tr {
+			width: 100%;
+			display: flex;
+		}
+
+		.table-scroll td,
+		.table-scroll th {
+			flex-basis: 100%;
+			flex-grow: 2;
+			display: block;
+			padding: 5px;
+			text-align: center;
+		}
+
+		.table-scroll td:nth-child(2),
+		.table-scroll th:nth-child(2) {
+			flex-basis: 200%;
+		}
+
+		.table-scroll td:nth-child(2) {
+			text-align: left;
+		}
+
+		/* Other options */
+
+		.table-scroll.small-first-col td:first-child,
+		.table-scroll.small-first-col th:first-child {
+			flex-basis: 30%;
+			flex-grow: 1;
+		}
+
+		.table-scroll tr:nth-child(2n) {
+			background-color: rgba(130, 130, 170, 0.1);
+		}
+
+		#tb-scores tbody {
+			height: 30vh;
+		}
+
+		.small-col {
+			flex-basis: 10%;
+		}
+
+		td,
+		th {
+			border-top: 1px dotted;
+			border-left: 1px dotted;
+
+		}
+
+		tbody tr:hover {
+			background: #888686 !important;
+		}
+
+
+		.btn {
+			margin-bottom: 30px;
+			display: inline-block;
+			padding: 8px 24px;
+			cursor: pointer;
+			background: rgb(150, 63, 63);
+			color: white;
+			font-size: 16px;
+			border: none;
+			transition: all .2s;
+		}
+
+		.btn[disabled] {
+			background: rgb(175, 175, 164);
+		}
+
+		.btn[disabled]:hover {
+			transform: none;
+			cursor: not-allowed;
+		}
+
+		.btn:hover {
+			transform: translateY(-2px);
+		}
+
+		.btn:focus {
+			animation: btn-click-animation .4s;
+		}
+
+		@keyframes btn-click-animation {
+			0% {
+				transform: translateY(5px);
+			}
+
+			100% {
+				transform: translateY(0);
+			}
+		}

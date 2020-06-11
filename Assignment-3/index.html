@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="./jquery.js"></script>
+
+</head>
+
+<body>
+	<h1>Class Marksheet</h1>
+	<div>
+		<form id="form" action="">
+			<div class="form-box">
+				<div class="form-group">
+					<label class="form-label" for="fname">Họ tên</label>
+					<div class="form-input">
+						<input type="text" data-property="name" name="name" id="fname">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-label" for="fmath">Điểm toán</label>
+					<div class="form-input">
+						<input type="number" data-property="math" min="0" max="10" aria-valuemin="0" aria-valuemax="10" name="fmath"
+							id="fmath">
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="form-label" for="fphysic">Điểm lý</label>
+					<div class="form-input">
+						<input type="number" data-property="physic" min="0" max="10" aria-valuemin="0" aria-valuemax="10"
+							name="fphysic" id="fphysic">
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="form-label" for="fchemistry">Điểm hóa</label>
+					<div class="form-input">
+						<input type="number" data-property="chemistry" min="0" max="10" aria-valuemin="0" aria-valuemax="10"
+							name="fchemistry" id="fchemistry">
+					</div>
+
+				</div>
+			</div>
+
+			<div class="text-center">
+				<button class="btn" disabled id="fsubmit">Nhap</button>
+			</div>
+
+		</form>
+	</div>
+	<div class="table-scroll__wrap">
+		<table class="table-scroll" id="tb-scores">
+			<thead>
+				<tr>
+					<th><span>STT</span>
+					</th>
+					<th><span>Họ tên</span></th>
+					<th><span>Toán</span></th>
+					<th><span>Lý</span></th>
+					<th><span>Hóa</span></th>
+					<th><span>Trung Bình</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- java script render here -->
+			</tbody>
+		</table>
+	</div>
+	</div>
+
+	<div class="text-center">
+		<button class="btn" onclick="tinhDTB()">Tính điểm trung bình</button>
+		<button class="btn" onclick="xacDinhHXG()">Xác định học sinh giỏi</button>
+	</div>
+	<script>		
+		// class Student lưu trữ dữ liệu mỗi học sinh
+		function Student(name, math, physic, chemistry) {
+			this.name = name || "";
+			this.scores = { math, physic, chemistry };
+			
+			this.isErr = function () {
+				return validateName(this.name)
+					|| validateScore(this.scores.math)
+					|| validateScore(this.scores.physic)
+					|| validateScore(this.scores.chemistry);
+			}
+
+			this.tinhDTB = function () {
+				return (this.scores.math + this.scores.physic + this.scores.chemistry) / 3;
+			}
+		}
+	
+		const students = []; //danh sách học sinh
+		let student = new Student(); // lưu trữ giá trị nhập từ form
+		
+		// xác định giá trị hợp lệ cho đối tượng student
+		const studentCheck = (function () {
+				let name = false;
+				let math = false;
+				let physic = false;
+				let chemistry = false;
+
+				return {
+					updateValidate: function (finput, val) {
+						switch ($(finput).attr('data-property')) {
+							case 'name':
+								name = val;
+								break;
+							case 'math':
+								math = val;
+								break;
+							case 'physic':
+								physic = val;
+								break;
+							case 'chemistry':
+								chemistry = val;
+								break;
+							default:
+								throw ("input data-property has equals name or math or physic or chemistry");
+								break;
+						}
+					},
+					isValidate: function () {
+						return name && math && physic && chemistry;
+						console.log(name, math, physic, chemistry);
+					},
+					reset: function(){
+						name = false;
+						math = false;
+						physic = false;
+						chemistry = false;
+					}
+				}
+			})();
+
+		// hàm tính điểm trung bình
+		function tinhDTB() {
+			let $dtbHTML = $('.dtb');
+			students.forEach((student, index) => {
+				$($dtbHTML[index]).text(Math.round(student.tinhDTB() * 10) / 10);
+			});
+		}
+
+		// hàm xác định học sinh giỏi
+		function xacDinhHXG() {
+			tinhDTB();
+			let d = $('.dtb');
+			d.each((index, e) => console.log($(e).text()));
+
+			d.each((index, ele) => {
+				if (parseFloat($(ele).text()) >= 8)
+					$(ele).parent().css('color', 'red');
+			});
+		}
+
+		// hàm hàm kiểm tra giá trị name nhập từ form
+		function validateName(name) {
+			let error = '';
+			if (!name || name.trim().length === 0) {
+				error = 'tên không thể trống';
+			}
+			else if (!/^[a-zA-Z]+/.test(name.trim())) {
+				error = 'tên sai định dạng';
+			}
+			return error;
+		}
+
+		// hàm hàm kiểm tra giá trị điểm môn học
+		function validateScore(score) {
+			let error = "";
+
+			if (isNaN(score)) {
+				error = 'điểm phải là 1 chữ số';
+			} else if ((score + '').trim().length === 0) {
+				error = 'điểm không được trống số';
+			}
+			else if (score < 0 || score > 10) {
+				error = 'điểm phải lớn từ 0 đến 10';
+			}
+			return error
+		}
+
+
+		// chức năng kiểm tra dữ liệu nhập vào form
+		function formValidate($fname, $scores) {
+
+			// kiểm tra tên student
+			$fname.on('input', function () {
+				$fname.removeClass('err-type');
+				$fname.next().remove();	//remove <i>erro notifi</i>
+				
+				const nameErr = validateName($fname.val());
+				if (nameErr !== "") {
+					studentCheck.updateValidate($fname, false);
+
+					$fname.addClass('err-type');
+					let $node = $('<i></i>').text(nameErr);
+					$fname.after($node);
+				}else{
+					studentCheck.updateValidate($fname, true);
+					student.name = $fname.val().trim();
+				}
+				
+				formDisabled();
+			});
+
+			// kiểm tra điểm
+			for (let i = 0; i < $scores.length; i++) {
+				$scores[i].attr('type', 'text');
+				$scores[i].on('input', function () {
+					$scores[i].removeClass('err-type');
+
+					$scores[i].next().remove();
+
+					const score = $scores[i].val();
+					const scoreErr = validateScore(score);
+					if (scoreErr !== "") {
+						studentCheck.updateValidate($scores[i], false);
+
+						$scores[i].addClass('err-type');
+						let $node = $('<i></i>').text(scoreErr);
+						$scores[i].after($node);
+					}else{
+						studentCheck.updateValidate($scores[i], true);
+						student.scores[$scores[i].attr('data-property')] = parseFloat(score);
+					}
+					formDisabled();
+				});
+			}
+		}
+
+		// tắt/bật của button thêm học sinh 
+		function formDisabled() {
+			if (studentCheck.isValidate()) {
+				$('#fsubmit').attr('disabled', false);
+			} else {
+				$('#fsubmit').attr('disabled', true);
+			}
+		}
+
+		// sau khi nhập sinh viên, đặt lại giá trị input của form
+		function formReset() {
+			student = new Student();
+			studentCheck.reset();
+			$('#fsubmit').attr('disabled', true);
+			$('#form').trigger('reset');
+		}
+
+
+		$(document).ready(function () {
+			const $fname = $('#fname');
+			const $fmath = $('#fmath');
+			const $fphysic = $('#fphysic');
+			const $fchemistry = $('#fchemistry');
+
+
+			formValidate($fname, [$fmath, $fphysic, $fchemistry]);
+
+			$('#fsubmit').click(function () {
+				event.preventDefault();
+
+				if(studentCheck.isValidate()){
+					students.push(student);
+				}else{
+					throw("student no validate");
+				}
+
+				console.log(students);
+				$('#tb-scores tbody').append(`
+					<tr>
+						<td>${students.length}</td>
+						<td>${student.name}</td>
+						<td>${student.scores.math}</td>
+						<td>${student.scores.physic}</td>
+						<td>${student.scores.chemistry}</td>
+						<td class="dtb">?</td>
+					</tr>
+				`);
+				formReset();
+				$fname.focus();
+			});
+		});
+	</script>
+</body>
+
+</html>
